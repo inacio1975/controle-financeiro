@@ -2,13 +2,14 @@ import React from "react";
 import { FcDown, FcUp } from 'react-icons/fc';
 import { BsTrash } from 'react-icons/bs';
 
-const List = ({ elementos, setElementos }) => {
+const List = ({ elementos, setElementos, sumSaida }) => {
 
     const deleteItem = (index) => {
         const lista = [...elementos];
         lista.splice(Number(index)-1, 1);
 
         setElementos(lista);
+        sumSaida();
     };
     return (
         <table className="table table-bordered bg-white mt-5">

@@ -8,6 +8,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
     const [elementos, setElementos] = useState([]);
+    const [entradas, setEntradas] = useState(0);
+    const [saidas, setSaidas] = useState(0);
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
       let lista = [
@@ -24,6 +27,36 @@ const App = () => {
         el.id = lista.length + 1;
         lista.push(el);
         setElementos(lista);
+
+        setEntradas(sumEntradas());
+        setTotal(entradas - saidas);
+    };
+
+    const sumEntradas = () => {
+        let lista = [...elementos];
+
+        let sum = 0;
+        lista.forEach((el) => {
+            if(el.tipo == "entrada"){
+                sum += Number(el.valor); 
+            }
+        });
+
+        return sum;
+    };
+
+    const sumSaida = () => {
+        let lista = [...elementos];
+
+        let sum = 0;
+        lista.forEach((el) => {
+            if(el.tipo == "saida"){
+                sum += Number(el.valor); 
+            }
+        });
+
+        setSaidas(sum);
+        setTotal(entradas - saidas);
     };
 
     return (
@@ -31,9 +64,9 @@ const App = () => {
             <Header />
             <main >
                 <div className="container">
-                    <Cards />
+                    <Cards entradas={ entradas } saidas={ saidas } total={ total }/>
                     <Form addElemento={ addElemento }/>
-                    <List elementos={ elementos } setElementos={ setElementos } />
+                    <List elementos={ elementos } setElementos={ setElementos } sumSaida={ sumSaida } />
                 </div>
             </main>
         </div>
