@@ -2,7 +2,14 @@ import React from "react";
 import { FcDown, FcUp } from 'react-icons/fc';
 import { BsTrash } from 'react-icons/bs';
 
-const List = () => {
+const List = ({ elementos, setElementos }) => {
+
+    const deleteItem = (index) => {
+        const lista = [...elementos];
+        lista.splice(Number(index)-1, 1);
+
+        setElementos(lista);
+    };
     return (
         <table className="table table-bordered bg-white mt-5">
             <thead>
@@ -14,24 +21,16 @@ const List = () => {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th >Salário</th>
-                    <td >150.000</td>
-                    <td ><FcUp /></td>
-                    <td ><BsTrash/></td>
-                </tr>
-                <tr>
-                    <th >Alimentação</th>
-                    <td >50.000</td>
-                    <td ><FcDown /></td>
-                    <td ><BsTrash/></td>
-                </tr>
-                <tr>
-                    <th >Teste</th>
-                    <td >150.000</td>
-                    <td ><FcDown /></td>
-                    <td ><BsTrash/></td>
-                </tr>
+                { !elementos.length ? (<tr><td colSpan={4}>Adicione um elemento</td></tr>) : (
+                    elementos.map((element, index) => (
+                        <tr key={index}>
+                            <th >{element.descricao}</th>
+                            <td >{element.valor}</td>
+                            <td >{element.tipo === "entrada" ? <FcUp /> : <FcDown />}</td>
+                            <td style={{ cursor: "pointer" }} onClick={()=> deleteItem(element.id)}><BsTrash /></td>
+                        </tr>
+                        ))
+                ) }
             </tbody>
         </table>
     );

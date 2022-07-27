@@ -1,5 +1,4 @@
 import React from "react";
-import { CardGroup } from "react-bootstrap";
 import CardItem from "./Card";
 
 const Cards = () => {
