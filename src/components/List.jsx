@@ -2,14 +2,14 @@ import React from "react";
 import { FcDown, FcUp } from 'react-icons/fc';
 import { BsTrash } from 'react-icons/bs';
 
-const List = ({ elementos, setElementos, sumSaida }) => {
+const List = ({ elementos, setElementos }) => {
 
-    const deleteItem = (index) => {
+    const deleteItem = (id) => {
         const lista = [...elementos];
-        lista.splice(Number(index)-1, 1);
+        let index = lista.indexOf((el) => el.id === id);
+        lista.splice(index, 1);
 
         setElementos(lista);
-        sumSaida();
     };
     return (
         <table className="table table-bordered bg-white mt-5">
@@ -27,7 +27,7 @@ const List = ({ elementos, setElementos, sumSaida }) => {
                         <tr key={index}>
                             <th >{element.descricao}</th>
                             <td >{element.valor}</td>
-                            <td >{element.tipo === "entrada" ? <FcUp /> : <FcDown />}</td>
+                            <td >{ !element.esaida ? <FcUp /> : <FcDown />}</td>
                             <td style={{ cursor: "pointer" }} onClick={()=> deleteItem(element.id)}><BsTrash /></td>
                         </tr>
                         ))

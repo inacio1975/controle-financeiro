@@ -1,29 +1,46 @@
 import React, { useState} from "react";
 
 const Form = ({ addElemento }) => {
-    const [elemento, setElemento] = useState({});
+    const [desc, setDesc] = useState("");
+    const [valor, setValor] = useState("");
+    const [esaida, setEsaida] = useState(false);
+
+    const generateId = () => Math.round(Math.random() * 1000);
 
     const newElement = (e) => {
         e.preventDefault();
+        if(!desc || !valor){
+            alert("Descrição e valor é obrigatório");
+            return;
+        }else if(valor < 1){
+            alert("Valor tem que ser poitivo");
+            return;
+        }
+
+        const elemento = {
+            id: generateId(),
+            descricao: desc,
+            valor: valor,
+            saida: esaida,
+        };
         addElemento(elemento);
+        setDesc("");
+        setValor("");
     };
 
     const handleDescricaoChange = (e) => {
         const descricao = e.target.value;
-        const element = {...elemento, descricao: descricao};
-        setElemento(element);
+        setDesc(descricao);
     };
 
     const handleValorChange = (e) => {
         const valor = e.target.value;
-        const element = {...elemento, valor: valor};
-        setElemento(element);
+        setValor(valor);
     };
 
     const handleTipoChange = (e) => {
         const tipo = e.target.value;
-        const element = {...elemento, tipo: tipo};
-        setElemento(element);
+        setEsaida(tipo==="saida");
     };
 
     return (
@@ -64,6 +81,7 @@ const Form = ({ addElemento }) => {
                         name="tbTipo"
                         value="entrada"
                         onChange={handleTipoChange}
+                        checked="checked"
                     />
                     <label className="form-check-label mx-2" htmlFor="tbTipoEntrada">
                         Entrada

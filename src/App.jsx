@@ -7,56 +7,40 @@ import List from "./components/List";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
-    const [elementos, setElementos] = useState([]);
+    
     const [entradas, setEntradas] = useState(0);
     const [saidas, setSaidas] = useState(0);
     const [total, setTotal] = useState(0);
 
-    useEffect(() => {
-      let lista = [
-        {id: '01', descricao: "Salário", valor: "150.000", tipo: "saida"},
-        {id: '02', descricao: "Alimentação", valor: "50.000", tipo: "saida"},
-        {id: '03', descricao: "Teste", valor: "350.000", tipo: "entrada"},
+    let lista = [
+        {id: '01', descricao: "Salário", valor: "150.000", esaida: true},
+        {id: '02', descricao: "Alimentação", valor: "50.000", esaida: true},
+        {id: '03', descricao: "Teste", valor: "350.000",esaida: false},
       ];
 
-      setElementos(lista);
-    }, []);
+      const [elementos, setElementos] = useState(lista ? lista : []);
+
+    useEffect(() => {
+      const todasSaidas = elementos
+        .filter((item) => item.esaida).map((item) => Number(item.valor.replace(".", "")));
+
+        const todasEntradas = elementos
+        .filter((item) => !item.esaida).map((item) => Number(item.valor.replace(".", "")));
+
+        const sumSaidas = todasSaidas.reduce((sum, valor) => sum + valor, 0).toFixed(2);
+        const sumEntradas = todasEntradas.reduce((sum, valor) => sum + valor, 0).toFixed(2);
+        
+        const _total = sumEntradas - sumSaidas;
+
+        setEntradas(sumEntradas);
+        setSaidas(sumSaidas);
+        setTotal(_total);
+
+    }, [elementos]);
 
     const addElemento = (el) => {
-        let lista = [...elementos];
-        el.id = lista.length + 1;
-        lista.push(el);
+        let lista = [...elementos, el];
         setElementos(lista);
-
-        setEntradas(sumEntradas());
-        setTotal(entradas - saidas);
-    };
-
-    const sumEntradas = () => {
-        let lista = [...elementos];
-
-        let sum = 0;
-        lista.forEach((el) => {
-            if(el.tipo == "entrada"){
-                sum += Number(el.valor); 
-            }
-        });
-
-        return sum;
-    };
-
-    const sumSaida = () => {
-        let lista = [...elementos];
-
-        let sum = 0;
-        lista.forEach((el) => {
-            if(el.tipo == "saida"){
-                sum += Number(el.valor); 
-            }
-        });
-
-        setSaidas(sum);
-        setTotal(entradas - saidas);
     };
 
     return (
@@ -66,7 +50,7 @@ const App = () => {
                 <div className="container">
                     <Cards entradas={ entradas } saidas={ saidas } total={ total }/>
                     <Form addElemento={ addElemento }/>
-                    <List elementos={ elementos } setElementos={ setElementos } sumSaida={ sumSaida } />
+                    <List elementos={ elementos } setElementos={ setElementos } />
                 </div>
             </main>
         </div>
