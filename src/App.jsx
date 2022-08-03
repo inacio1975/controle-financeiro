@@ -4,6 +4,8 @@ import Cards from "./components/Cards";
 import Form from "./components/Form";
 import List from "./components/List";
 
+import { getRegistros, newRegistro } from './api/registros';
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
@@ -12,13 +14,10 @@ const App = () => {
     const [saidas, setSaidas] = useState(0);
     const [total, setTotal] = useState(0);
 
-    let lista = [
-        {id: '01', descricao: "Salário", valor: "150.000", esaida: true},
-        {id: '02', descricao: "Alimentação", valor: "50.000", esaida: true},
-        {id: '03', descricao: "Teste", valor: "350.000",esaida: false},
-      ];
+    const [elementos, setElementos] = useState([]);
 
-      const [elementos, setElementos] = useState(lista ? lista : []);
+    getRegistros(setElementos);
+
 
     useEffect(() => {
       const todasSaidas = elementos
@@ -39,8 +38,7 @@ const App = () => {
     }, [elementos]);
 
     const addElemento = (el) => {
-        let lista = [...elementos, el];
-        setElementos(lista);
+        newRegistro(el, setElementos);
     };
 
     return (

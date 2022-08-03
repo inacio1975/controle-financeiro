@@ -21,7 +21,7 @@ const Form = ({ addElemento }) => {
             id: generateId(),
             descricao: desc,
             valor: valor,
-            saida: esaida,
+            esaida: esaida,
         };
         addElemento(elemento);
         setDesc("");
@@ -31,6 +31,7 @@ const Form = ({ addElemento }) => {
     const handleDescricaoChange = (e) => {
         const descricao = e.target.value;
         setDesc(descricao);
+        console.log(desc);
     };
 
     const handleValorChange = (e) => {
@@ -81,7 +82,7 @@ const Form = ({ addElemento }) => {
                         name="tbTipo"
                         value="entrada"
                         onChange={handleTipoChange}
-                        checked="checked"
+                        
                     />
                     <label className="form-check-label mx-2" htmlFor="tbTipoEntrada">
                         Entrada
